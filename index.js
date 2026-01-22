@@ -3,10 +3,19 @@ const notesContainer = document.querySelector('.notes-container')
 let notes = document.querySelectorAll('.input-box')
 
 const getUpdate = () => {
-    localStorage.getItem('notes')
+   const saveData = localStorage.getItem('notes')
+   if (saveData) {
+    notesContainer.innerHTML = saveData
+   }
 }
 
 getUpdate()
+
+document.querySelectorAll('.notes-box').forEach(nt => {
+    nt.onkeyup = () => {
+        updateNote()
+    }
+})
 
 const updateNote = () => {
     localStorage.setItem('notes', notesContainer.innerHTML)
@@ -25,12 +34,19 @@ notesContainer.addEventListener('click', (e) => {
     if (e.target.tagName === 'IMG') {
         e.target.parentElement.remove()
         updateNote()
-    } else if (e.target.tagName = 'P') {
+    } else if (e.target.tagName === 'P') {
         notes = document.querySelectorAll('.input-box')
         notes.forEach(nt => {
             nt.onkeyup = () => {
                 updateNote()
             }
         })
+    }
+})
+
+document.addEventListener('keydown', event => {
+    if (event.key === 'Enter') {
+        document.execCommand('insertLibeBreak')
+        event.preventDefault()
     }
 })
